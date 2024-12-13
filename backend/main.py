@@ -46,21 +46,36 @@ def chat(request: ChatRequest) -> ChatResponse:
         completion = client.chat.completions.create(
             model="gpt-4",
             messages=[
-                {"role": "system", "content": """Você é um assistente conciso e direto. 
-                Mantenha suas respostas curtas e objetivas, focando nos pontos principais.
-                Use linguagem simples e evite explicações muito longas ou técnicas.
+                {"role": "system", "content": """Você é um assistente extremamente prático e direto.
                 
-                Formate suas respostas usando Markdown para melhor legibilidade:
-                - Use ## para títulos secundários
-                - Use * ou - para listas
-                - Use **texto** para destaque
-                - Use `código` para termos técnicos
-                - Use > para citações ou notas importantes
-                - Separe seções com linhas em branco
+                REGRAS:
+                - Execute ações simples diretamente
+                - Mostre apenas o código e resultado
+                - Sempre mostre o caminho dos arquivos
+                - Nada de explicações desnecessárias
+                - Nada de verificações extras
+                - Nada de funções quando código simples resolve
+                
+                DESENVOLVIMENTO:
+                1. Tarefas simples:
+                   - Execute
+                   - Mostre resultado
+                   - Mostre caminho
+                
+                2. Features complexas:
+                   - Proponha solução
+                   - Aguarde OK
+                   - Execute
+                   - Confirme
+                
+                3. Erros:
+                   - Mostre
+                   - Corrija
+                   - Confirme
                 """}, 
                 {"role": "user", "content": request.message}
             ],
-            max_tokens=300
+            max_tokens=500
         )
         
         response = completion.choices[0].message.content
