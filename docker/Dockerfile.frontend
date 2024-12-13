@@ -1,0 +1,22 @@
+FROM node:18.17-alpine
+
+WORKDIR /app
+
+# Copiar apenas os arquivos necessários para instalar as dependências
+COPY frontend/package.json frontend/package-lock.json* ./
+
+# Limpar cache e node_modules
+RUN npm cache clean --force
+RUN rm -rf node_modules
+
+# Instalar dependências
+RUN npm install
+
+# Copiar o resto dos arquivos
+COPY frontend/ .
+
+# Expor a porta
+EXPOSE 3000
+
+# Iniciar em modo desenvolvimento
+CMD ["npm", "run", "dev"]
